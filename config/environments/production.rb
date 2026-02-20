@@ -49,13 +49,13 @@ Rails.application.configure do
   # config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  # config.force_ssl = true
 
   # Skip http-to-https redirect for the default health check endpoint.
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
 
   # Log to STDOUT by default
-  config.logger = ActiveSupport::Logger.new(STDOUT)
+  config.logger = ActiveSupport::Logger.new($stdout)
     .tap { |logger| logger.formatter = ::Logger::Formatter.new }
     .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
@@ -72,7 +72,7 @@ Rails.application.configure do
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   config.active_job.queue_adapter = :solid_queue
-  config.solid_queue.connects_to = {database: {writing: :queue}}
+  # config.solid_queue.connects_to = {database: {writing: :queue}}
 
   # config.active_job.queue_name_prefix = "budgie_production"
 

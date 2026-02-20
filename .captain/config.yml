@@ -1,0 +1,14 @@
+test-suites:
+  budgie-minitest:
+    command: bin/rails test
+    results:
+      language: Ruby
+      framework: minitest
+      path: tmp/reports/*.xml
+    retries:
+      attempts: 2
+      command: bin/rails test {{ tests }}
+    output:
+      print-summary: true
+      reporters:
+        rwx-v1-json: captain-results.json
