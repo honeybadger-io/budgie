@@ -28,15 +28,6 @@ tasks:
       - Gemfile
       - Gemfile.lock
 
-  - key: node
-    use: code
-    call: nodejs/install 1.1.11
-    with:
-      node-version: "22.14.0"
-    filter:
-      - package.json
-      - package-lock.json
-
   - key: bundle-install
     use: [code, ruby]
     run: bundle install
@@ -44,22 +35,15 @@ tasks:
       - Gemfile
       - Gemfile.lock
 
-  - key: npm-install
-    use: [code, node]
-    run: npm install
-    filter:
-      - package.json
-      - package-lock.json
-
   - key: captain
     call: rwx/install-captain 1.1.3
 
   - key: db-setup
     use: bundle-install
-    run: bin/rails db:prepare
+    run: bundle exec rails db:prepare
 
   - key: test
-    use: [bundle-install, npm-install, db-setup, captain]
+    use: [bundle-install, db-setup, captain]
     run: captain run budgie-minitest
     env:
       RAILS_ENV: test
