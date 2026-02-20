@@ -1,0 +1,72 @@
+on:
+  github:
+    push:
+      init:
+        commit-sha: ${{ event.git.sha }}
+    pull_request:
+      init:
+        commit-sha: ${{ event.git.sha }}
+
+base:
+  image: ubuntu:24.04
+  config: rwx/base 1.0.0
+
+tasks:
+  - key: code
+    call: git/clone 2.0.3
+    with:
+      repository: https://github.com/honeybadger-io/budgie.git
+      ref: ${{ init.commit-sha }}
+      github-token: ${{ github.token }}
+
+  - key: ruby
+    use: code
+    call: mint/install-ruby 1.2.6
+    with:
+      ruby-version: "3.4.5"
+    filter:
+      - Gemfile
+      - Gemfile.lock
+
+  - key: node
+    use: code
+    call: mint/install-node 1.1.4
+    with:
+      node-version: "22.14.0"
+    filter:
+      - package.json
+      - package-lock.json
+
+  - key: bundle-install
+    use: [ruby, code]
+    run: bundle install
+    filter:
+      - Gemfile
+      - Gemfile.lock
+
+  - key: npm-install
+    use: [node, code]
+    run: npm install
+    filter:
+      - package.json
+      - package-lock.json
+
+  - key: captain
+    call: rwx/install-captain 1.1.3
+
+  - key: db-setup
+    use: bundle-install
+    run: bin/rails db:prepare
+
+  - key: test
+    use: [bundle-install, npm-install, db-setup, captain]
+    run: captain run budgie-minitest
+    env:
+      RAILS_ENV: test
+    outputs:
+      test-results:
+        - path: captain-results.json
+
+  - key: lint
+    use: bundle-install
+    run: bundle exec standardrb

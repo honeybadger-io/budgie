@@ -1,6 +1,14 @@
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
+require "minitest/reporters"
+
+Minitest::Reporters.use!(
+  [
+    Minitest::Reporters::DefaultReporter.new,
+    Minitest::Reporters::JUnitReporter.new("tmp/reports", true, single_file: true)
+  ]
+)
 
 module ActiveSupport
   class TestCase
