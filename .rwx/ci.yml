@@ -38,14 +38,14 @@ tasks:
       - package-lock.json
 
   - key: bundle-install
-    use: [ruby, code]
+    use: [code, ruby]
     run: bundle install
     filter:
       - Gemfile
       - Gemfile.lock
 
   - key: npm-install
-    use: [node, code]
+    use: [code, node]
     run: npm install
     filter:
       - package.json
