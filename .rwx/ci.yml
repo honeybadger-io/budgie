@@ -21,7 +21,7 @@ tasks:
 
   - key: ruby
     use: code
-    call: mint/install-ruby 1.2.6
+    call: mint/install-ruby 1.2.3
     with:
       ruby-version: "3.4.5"
     filter:
