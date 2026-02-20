@@ -21,7 +21,7 @@ tasks:
 
   - key: ruby
     use: code
-    call: mint/install-ruby 1.2.3
+    call: ruby/install 1.2.17
     with:
       ruby-version: "3.4.5"
     filter:
@@ -30,7 +30,7 @@ tasks:
 
   - key: node
     use: code
-    call: mint/install-node 1.1.4
+    call: nodejs/install 1.1.11
     with:
       node-version: "22.14.0"
     filter:
